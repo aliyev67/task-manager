@@ -30,6 +30,9 @@ public class Main {
                                 System.out.println(format(t)));
                     }
                     case "3" -> {
+                        if (service.findAll().isEmpty()){
+                            System.out.println("Задач нет(");
+                        }
                         service.findPending().forEach(t ->
                                 System.out.println(format(t)));
                     }
