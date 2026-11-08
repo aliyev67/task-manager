@@ -1,5 +1,6 @@
 package com.islam;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -41,5 +42,28 @@ public class TaskServiceTest {
         List<Task> list = service.findAll();
 
         assertEquals(List.of("b", "d", "c", "a"), list.stream().map(Task::title).toList());
+    }
+
+    @Test
+    void completeMarksTaskDone() {
+        TaskService service = new TaskService();
+        Task task = service.add("a", Priority.LOW);
+
+        Task completed = service.complete(task.id());
+
+        assertTrue(completed.done());
+
+        assertEquals(task.title(), completed.title());
+        assertEquals(task.id(), completed.id());
+    }
+
+    @Test
+    void completeUnknownIdThrows() {
+        TaskService service = new TaskService();
+
+        TaskNotFoundException e = assertThrows(TaskNotFoundException.class,
+                () -> service.complete(999));
+
+        assertEquals("Task not found: 999", e.getMessage());
     }
 }

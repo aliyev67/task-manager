@@ -16,7 +16,17 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findAll(){
+    public List<Task> findAll() {
         return tasks.values().stream().sorted(Comparator.comparing(Task::priority).reversed().thenComparing(Task::id)).toList();
+    }
+
+    public Task complete(int id) {
+        Task task = tasks.get(id);
+        if (task == null) {
+            throw new TaskNotFoundException(id);
+        }
+        Task task1 = new Task(task.id(), task.title(), task.priority(), true);
+        tasks.put(id, task1);
+        return task1;
     }
 }
