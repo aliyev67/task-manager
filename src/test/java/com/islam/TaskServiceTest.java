@@ -3,6 +3,7 @@ package com.islam;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,5 +66,38 @@ public class TaskServiceTest {
                 () -> service.complete(999));
 
         assertEquals("Task not found: 999", e.getMessage());
+    }
+
+    @Test
+    void deleteRemovesTask(){
+        TaskService service = new TaskService();
+        Task task = service.add("a", Priority.HIGH);
+        service.delete(task.id());
+
+        List<Task> list = service.findAll();
+
+        assertTrue(list.isEmpty());
+    }
+
+    @Test
+    void deleteUnknownIdThrows() {
+        TaskService service = new TaskService();
+
+        TaskNotFoundException e = assertThrows(TaskNotFoundException.class,
+                () -> service.delete(999));
+
+        assertEquals("Task not found: 999", e.getMessage());
+    }
+
+    @Test
+    void findPendingReturnsOnlyNotDone() {
+        TaskService service = new TaskService();
+        Task task1 = service.add("a", Priority.HIGH);
+        Task task2 = service.add("c", Priority.LOW);
+        Task task3 = service.add("f", Priority.HIGH);
+
+        service.complete(task2.id());
+
+        assertEquals(List.of(task1, task3), service.findPending());
     }
 }

@@ -29,4 +29,16 @@ public class TaskService {
         tasks.put(id, task1);
         return task1;
     }
+
+    public Task delete(int id) {
+        Task removed = tasks.remove(id);
+        if (removed == null) {
+            throw new TaskNotFoundException(id);
+        }
+        return removed;
+    }
+
+    public List<Task> findPending(){
+        return findAll().stream().filter(task -> !task.done()).toList();
+    }
 }
