@@ -1,13 +1,12 @@
 package com.islam;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TaskService {
-    private Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
     private int nextId = 1;
 
-    public Task add (String title, Priority priority) {
+    public Task add(String title, Priority priority) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Title must not be blank");
         }
@@ -15,5 +14,9 @@ public class TaskService {
         tasks.put(nextId, task);
         nextId++;
         return task;
+    }
+
+    public List<Task> findAll(){
+        return tasks.values().stream().sorted(Comparator.comparing(Task::priority).reversed().thenComparing(Task::id)).toList();
     }
 }
