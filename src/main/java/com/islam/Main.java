@@ -1,5 +1,6 @@
 package com.islam;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
@@ -22,22 +23,25 @@ public class Main {
                         System.out.println("Добавлена: " + service.add(title, priority));
                     }
                     case "2" -> {
+                        if (service.findAll().isEmpty()){
+                            System.out.println("Задач нет(");
+                        }
                         service.findAll().forEach(t ->
-                                System.out.println("[" + t.id() + "] " + t.title() + " (" + t.priority() + ")" + (t.done() ? " ✓" : "")));
+                                System.out.println(format(t)));
                     }
                     case "3" -> {
                         service.findPending().forEach(t ->
-                                System.out.println("[" + t.id() + "] " + t.title() + " (" + t.priority() + ")" + (t.done() ? " ✓" : "")));
+                                System.out.println(format(t)));
                     }
                     case "4" -> {
-                        System.out.print("id: ");
+                        System.out.print("Номер задачи: ");
                         int id = Integer.parseInt(scanner.nextLine().strip());
                         System.out.println("Выполнена: " + service.complete(id));
                     }
                     case "5" -> {
-                        System.out.print("id: ");
+                        System.out.print("Номер задачи: ");
                         int id = Integer.parseInt(scanner.nextLine().strip());
-                        System.out.println("Выполнена: " + service.delete(id));
+                        System.out.println("Удалена: " + service.delete(id));
                     }
                     case "0" -> {
                         System.out.println("Пока!");
@@ -49,5 +53,9 @@ public class Main {
                 System.out.println("Ошибка: " + e.getMessage());
             }
         }
+    }
+
+    private static String format(Task t) {
+        return "[" + t.id() + "] " + t.title() + " (" + t.priority() + ")" + (t.done() ? " ✓" : "");
     }
 }
