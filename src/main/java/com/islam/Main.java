@@ -1,6 +1,5 @@
 package com.islam;
-
-import java.sql.SQLOutput;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -20,31 +19,19 @@ public class Main {
                         String title = scanner.nextLine();
                         System.out.print("Приоритет (LOW/MEDIUM/HIGH): ");
                         Priority priority = Priority.valueOf(scanner.nextLine().strip().toUpperCase());
-                        System.out.println("Добавлена: " + service.add(title, priority));
+                        System.out.println("Добавлена: " + format(service.add(title, priority)));
                     }
-                    case "2" -> {
-                        if (service.findAll().isEmpty()){
-                            System.out.println("Задач нет(");
-                        }
-                        service.findAll().forEach(t ->
-                                System.out.println(format(t)));
-                    }
-                    case "3" -> {
-                        if (service.findAll().isEmpty()){
-                            System.out.println("Задач нет(");
-                        }
-                        service.findPending().forEach(t ->
-                                System.out.println(format(t)));
-                    }
+                    case "2" -> printList(service.findAll());
+                    case "3" -> printList(service.findPending());
                     case "4" -> {
                         System.out.print("Номер задачи: ");
                         int id = Integer.parseInt(scanner.nextLine().strip());
-                        System.out.println("Выполнена: " + service.complete(id));
+                        System.out.println("Выполнена: " + format(service.complete(id)));
                     }
                     case "5" -> {
                         System.out.print("Номер задачи: ");
                         int id = Integer.parseInt(scanner.nextLine().strip());
-                        System.out.println("Удалена: " + service.delete(id));
+                        System.out.println("Удалена: " + format(service.delete(id)));
                     }
                     case "0" -> {
                         System.out.println("Пока!");
@@ -60,5 +47,13 @@ public class Main {
 
     private static String format(Task t) {
         return "[" + t.id() + "] " + t.title() + " (" + t.priority() + ")" + (t.done() ? " ✓" : "");
+    }
+
+    private static void printList(List<Task> list) {
+        if (list.isEmpty()) {
+            System.out.println("Задач нет");
+            return;
+        }
+        list.forEach(t -> System.out.println(format(t)));
     }
 }
