@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        TaskService service = new TaskService();
+        TaskService service = new TaskService(new InMemoryTaskRepository());
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
