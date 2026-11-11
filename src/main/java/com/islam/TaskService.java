@@ -30,7 +30,7 @@ public class TaskService {
             throw new TaskNotFoundException(id);
         }
         Task task1 = new Task(task.id(), task.title(), task.priority(), true);
-        repository.save(task);
+        repository.save(task1);
         return task1;
     }
 
